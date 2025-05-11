@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2575.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 13.0px 'Helvetica Neue'; min-height: 15.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="en"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Weaving Draft Map Generator&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>body { margin: 0; overflow: hidden; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>#map { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }</p>
+<p class="p1"><span class="Apple-converted-space">      </span>canvas { position: absolute; top: 0; left: 0; z-index: 1; pointer-events: none; }</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- Leaflet.js for the map --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" /&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;!-- p5.js --&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="map"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let map;</p>
+<p class="p1"><span class="Apple-converted-space">      </span>let canvas;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>function setup() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas = createCanvas(windowWidth, windowHeight);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas.position(0, 0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>canvas.style('pointer-events', 'none');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>noLoop();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>setupMap();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>function setupMap() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>map = L.map('map').setView([37.5665, 126.9780], 13); // 서울 기준</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>attribution: '&amp;copy; OpenStreetMap contributors'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}).addTo(map);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>map.on('click', function(e) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const lat = e.latlng.lat;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>const lon = e.latlng.lng;</p>
+<p class="p1"><span class="Apple-converted-space">          </span>drawWeavingPattern(lat, lon);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>function drawWeavingPattern(lat, lon) {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>clear();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const size = 700;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const cols = 20;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const rows = 20;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const cellSize = size / cols;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const seed = int((lat + lon) * 10000);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>randomSeed(seed);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>push();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>translate((width - size) / 2, (height - size) / 2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>noFill();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>stroke(0);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>strokeWeight(1);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>rect(0, 0, size, size);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>for (let y = 0; y &lt; rows; y++) {</p>
+<p class="p1"><span class="Apple-converted-space">          </span>for (let x = 0; x &lt; cols; x++) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (random() &gt; 0.5) {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>line(x * cellSize, y * cellSize, (x + 1) * cellSize, (y + 1) * cellSize);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} else {</p>
+<p class="p1"><span class="Apple-converted-space">              </span>line((x + 1) * cellSize, y * cellSize, x * cellSize, (y + 1) * cellSize);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">          </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>pop();</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">      </span>function windowResized() {</p>
+<p class="p1"><span class="Apple-converted-space">        </span>resizeCanvas(windowWidth, windowHeight);</p>
+<p class="p1"><span class="Apple-converted-space">      </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">  </span>&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
