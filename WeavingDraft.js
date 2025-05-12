@@ -24,7 +24,7 @@ class WeavingDraft {
 draw() {
   background(255);
   stroke(0);         // 검정색 선
-  strokeWeight(0.5); // 가는 실선
+  strokeWeight(1); // 가는 실선
 
   for (let y = 0; y < this.gridCount; y++) {
     for (let x = 0; x < this.gridCount; x++) {
