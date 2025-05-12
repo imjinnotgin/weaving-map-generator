@@ -12,7 +12,7 @@ function setup() {
   weavingDraft.generate(random(1000), random(1000));
   weavingDraft.draw();
 
-  initMap();
+  initMap(); // 이 줄이 있어야 합니다.
 }
 
 function draw() {}
