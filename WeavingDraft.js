@@ -21,21 +21,24 @@ class WeavingDraft {
     }
   }
 
- draw() {
+draw() {
   background(255);
+  stroke(0);         // 검정색 선
+  strokeWeight(0.5); // 가는 실선
+
   for (let y = 0; y < this.gridCount; y++) {
     for (let x = 0; x < this.gridCount; x++) {
       const val = this.grid[y][x];
+      
       if (val) {
-        fill(val); // 랜덤 컬러
+        fill(val);   // 셀이 채워진 경우: 색상 채우기
       } else {
-        noFill();
+        noFill();    // 비어있는 경우: 투명하게
       }
 
-      stroke(0, 20); // 아주 연한 검은색 (20/255 불투명도)
-      strokeWeight(0.5); // 아주 얇은 선
       rect(x * this.cellSize, y * this.cellSize, this.cellSize, this.cellSize);
     }
   }
 }
+
 
