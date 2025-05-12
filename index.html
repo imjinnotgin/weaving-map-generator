@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Weaving Map Generator</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
+    <style>
+      body {
+        display: flex;
+        justify-content: space-between;
+        margin: 0;
+      }
+      #canvas-container {
+        width: 700px;
+        height: 700px;
+      }
+      #map {
+        width: 700px;
+        height: 700px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+    <div id="map"></div>
+
+    <script src="WeavingDraft.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>
