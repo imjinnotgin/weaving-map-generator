@@ -26,12 +26,18 @@ function initMap() {
   const map = L.map('map').setView([37.5665, 126.9780], 3);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-  map.on('click', function(e) {
-    const lat = e.latlng.lat;
-    const lng = e.latlng.lng;
-    weavingDraft.generate(lat, lng);
-    redraw();
-  });
+map.on('click', function(e) {
+  const lat = e.latlng.lat;
+  const lng = e.latlng.lng;
+
+  // 고정밀 수치를 기반으로 시드 생성
+  const latSeed = Math.floor(lat * 1000000);  // 소수점 6자리 반영
+  const lngSeed = Math.floor(lng * 1000000);
+
+  weavingDraft.generate(latSeed, lngSeed);
+  redraw();
+});
+
 }
 
 class WeavingDraft {
