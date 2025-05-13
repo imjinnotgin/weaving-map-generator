@@ -40,5 +40,16 @@ function draw() {
     }
   }
 }
+function drawGridOverlay(gridCount, cellSize) {
+  stroke(0); // 진한 검정색
+  strokeWeight(1); // 명확하게 보이게
+
+  for (let i = 0; i <= gridCount; i++) {
+    // 수직선
+    line(i * cellSize, 0, i * cellSize, canvasSize);
+    // 수평선
+    line(0, i * cellSize, canvasSize, i * cellSize);
+  }
+}
 
 }
