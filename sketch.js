@@ -1,6 +1,6 @@
 let weavingDraft;
 const canvasSize = 700;
-const gridCount = 48;
+const gridCount = 21;
 const cellSize = canvasSize / gridCount;
 
 function setup() {
